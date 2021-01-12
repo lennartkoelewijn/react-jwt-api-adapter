@@ -1,6 +1,6 @@
 {
   "name": "react-jwt-api-adapter",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "React context provider for requesting API&#x27;s with expiring JWT&#x27;s.",
   "author": "lennartkoelewijn",
   "license": "MIT",

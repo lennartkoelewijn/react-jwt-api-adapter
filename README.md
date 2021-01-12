@@ -23,10 +23,10 @@ const App = () => {
     <ReactJwtApiAdapter
       baseUrl='http://localhost:8000/api/v1'
       token={
-        'eyJhbGciOiJSUzI1NiIsInR5c.eyJpZCI6ImZjMDg0MTI5LTYyNDctNDUy.HOUPRhR6pCtLHiDKgJETn'
+        'eyJhbGciOiJSUzI1NiIsInR5cCI6Ikp.eyJpZCI6ImZjMDg0MTI5LTYyNDctNDUyNS.NZfIVPYeVIs-tU2MHWk7tW'
       }
       updateToken={async () => {
-        return 'eyJhbGciOiJSUzI1NiIsInR.eyJpZCI6ImZjMDg0MTI5LTYyNDc.EqqlHjK4-a5PX9YoVz6p'
+        return 'eyJhbGciOiJSUzI1NiIsI.eyJpZCI6ImZjMDg0MTI5LTYyNDc.EqqlHjK4-a5PX9YoVz6pFk86wnF7_Szl_'
       }}
       leeway={5}
     >
@@ -42,9 +42,10 @@ const Profile = () => {
   React.useEffect(() => {
     const get = async () => {
       try {
-        const response = await adapter.callApi('/user', {
-          method: 'GET'
-        })
+        const response = await adapter.callApi(
+          '/user',
+          { method: 'GET' }
+        )
 
         if (response.request.status === 200) {
           setUser(response.data)
@@ -67,6 +68,22 @@ const Profile = () => {
 }
 
 export default App
+```
+
+Or change the callApi to use the interceptor if you want to manipulate the request function before firing the fetch, this way you can add extra headers (for example)
+
+```
+const response = await adapter.callApi(
+  '/user',
+  {
+    method: 'GET'
+  },
+  async (url: string, settings: Object) => {
+    const interceptorResponse = await adapter.requestApi(url, settings)
+
+    return interceptorResponse
+  }
+)
 ```
 
 ## Props

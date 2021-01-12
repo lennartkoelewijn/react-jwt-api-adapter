@@ -90,6 +90,7 @@ const ReactJwtApiAdapter = ({
   async function callApi(
     url: string = '',
     settings: Settings = {},
+    interceptor?: any,
     retry: boolean = true
   ): Promise<any> {
     if (token) {
@@ -104,6 +105,7 @@ const ReactJwtApiAdapter = ({
           const response = await callApi(
             url,
             { ...settings, ...{ delay: 0 } },
+            interceptor,
             false
           )
 
@@ -112,7 +114,13 @@ const ReactJwtApiAdapter = ({
       }
     }
 
-    const response: Promise<any> = await requestApi(url, settings)
+    let response: Promise<any>
+
+    if (typeof interceptor === 'function') {
+      response = await interceptor(url, settings)
+    } else {
+      response = await requestApi(url, settings)
+    }
 
     return response
   }
